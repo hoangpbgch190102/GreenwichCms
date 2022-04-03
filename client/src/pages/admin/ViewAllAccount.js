@@ -18,7 +18,6 @@ const ViewAllAccount = () => {
     const [search, setSearch] = React.useState('');
     const { userState: { users }, getAllUsers, findUser, deleteUser } = React.useContext(UserContext);
     React.useEffect(() => getAllUsers(), [])
-    console.log(users);
 
     const chooseUser = userId => {
         findUser(userId)
@@ -32,7 +31,7 @@ const ViewAllAccount = () => {
         }
     }
 
-    const editProps = { setEdit }
+    const props = { setEdit }
 
     return (
         <>
@@ -85,7 +84,7 @@ const ViewAllAccount = () => {
                         </TableBody>
                     </Table>
                 </React.Fragment >
-                : <UpdateAccount props={editProps} />
+                : <UpdateAccount props={props} />
             }
         </>
     );

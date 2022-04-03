@@ -20,15 +20,16 @@ const style = {
 };
 
 
-const ModalCreateTopic = ({ props }) => {
+const ModalUpdateTopic = ({ props }) => {
     const { open, handleClose } = props;
-    const { createNewTopic } = React.useContext(TopicContext)
-    const [title, setTitle] = React.useState('')
+    const { UpdateTopic, topicState: { topic } } = React.useContext(TopicContext)
+    // const { title } = topic
+    const [titleUpdate, setTitleUpdate] = React.useState('')
+    console.log(titleUpdate);
 
-    const handelCreateTopic = async (e) => {
+    const handelUpdateTopic = async (e) => {
         e.preventDefault();
-        await createNewTopic({ title: title });
-        setTitle('');
+        await UpdateTopic({ ...topic, title: titleUpdate })
         handleClose();
     }
 
@@ -41,8 +42,8 @@ const ModalCreateTopic = ({ props }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <h1 className="modal-create__title">Create new Topic</h1>
-                    <form action="" onSubmit={handelCreateTopic}>
+                    <h1 className="modal-create__title">Update Topic</h1>
+                    <form action="" onSubmit={handelUpdateTopic}>
                         <TextField
                             required
                             fullWidth
@@ -50,8 +51,8 @@ const ModalCreateTopic = ({ props }) => {
                             label="Topic"
                             name="title"
                             autoComplete="title"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
+                            value={titleUpdate}
+                            onChange={e => setTitleUpdate(e.target.value)}
                             autoFocus
                         />
                         <Button
@@ -60,7 +61,7 @@ const ModalCreateTopic = ({ props }) => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            create
+                            update
                         </Button>
                     </form>
                     <div style={{ textAlign: 'right' }}>
@@ -72,4 +73,4 @@ const ModalCreateTopic = ({ props }) => {
     );
 };
 
-export default ModalCreateTopic;
+export default ModalUpdateTopic;

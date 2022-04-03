@@ -26,10 +26,9 @@ const TopicContextProvider = ({ children }) => {
         }
     }
 
-    const createNewTopic = async topicForm => {
+    const createNewTopic = async title => {
         try {
-            const response = await axios.post(`${apiUrl}/Category`, topicForm)
-            console.log(response);
+            const response = await axios.post(`${apiUrl}/Category`, title)
             if (response.status === 200) {
                 dispatch({
                     type: 'CREATE_NEW_TOPIC',
@@ -42,10 +41,49 @@ const TopicContextProvider = ({ children }) => {
         }
     }
 
+    const findTopic = id => {
+        const findTopic = topicState.topics.find(topic => topic.ideaCategoryId === id);
+        dispatch({ type: 'FIND_TOPIC', payload: findTopic });
+    }
+
+    const UpdateTopic = async title => {
+        try {
+            const response = await axios.put(`${apiUrl}/Category`, title)
+            console.log('response');
+            if (response.status === 200) {
+                dispatch({
+                    type: 'UPDATE_TOPIC',
+                    payload: response.data
+                })
+                return response.data
+            }
+        } catch (error) {
+            return error.response.data
+        }
+    }
+
+    const deleteTopic = async id => {
+        try {
+            const response = await axios.delete(`${apiUrl}/Category/${id}`)
+            if (response.status === 200) {
+                dispatch({
+                    type: 'DELETE_TOPIC',
+                    payload: id
+                })
+                return response.data
+            }
+        } catch (error) {
+            return error.response.data
+        }
+    }
+
     const topicData = {
         topicState,
         createNewTopic,
-        getAllTopic
+        getAllTopic,
+        findTopic,
+        UpdateTopic,
+        deleteTopic
     }
 
     return (

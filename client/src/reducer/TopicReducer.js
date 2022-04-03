@@ -11,6 +11,22 @@ export const TopicReducer = (state, action) => {
                 ...state,
                 topics: [...state.topics, payload]
             }
+        case 'FIND_TOPIC':
+            return {
+                ...state,
+                topic: payload
+            }
+        case 'UPDATE_TOPIC':
+            const newTopics = state.topics.map(topic => topic.ideaCategoryId === payload.ideaCategoryId ? payload : topic)
+            return {
+                ...state,
+                topics: newTopics
+            }
+        case 'DELETE_TOPIC':
+            return {
+                ...state,
+                topics: state.topics.filter(topic => topic.ideaCategoryId !== payload)
+            }
         default:
             return state;
     }

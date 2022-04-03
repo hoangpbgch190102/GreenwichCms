@@ -47,11 +47,11 @@ const AuthContextProvider = ({ children }) => {
     }, [])
 
     const loginUser = async userForm => {
-        console.log('alo');
         try {
             const response = await axios.post(`${apiUrl}/account/Login`, userForm)
             if (response.status === 200) {
                 const id = response.data.user.userId
+                console.log(response);
                 localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.token);
                 localStorage.setItem(USER_ID, id);
                 await loadUser(id);

@@ -11,6 +11,7 @@ import { UserContext } from '../../contexts/UserContext';
 import SuccessAlert from '../../components/alert/SuccessAlert';
 
 const UpdateAccount = (props) => {
+    const { setEdit } = props;
     const { userState: { user }, updateUser } = React.useContext(UserContext)
     React.useEffect(() => { setUserFormUpdate(user) }, [user])
     const [userFormUpdate, setUserFormUpdate] = React.useState(user);
@@ -31,7 +32,7 @@ const UpdateAccount = (props) => {
         setShowAler(true)
         setTimeout(() => {
             setShowAler(false)
-            props.props.setEdit(false)
+            setEdit(false)
         }, 2000)
     }
 

@@ -4,10 +4,18 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { TopicContext } from '../../contexts/TopicContext';
 
 import './Home.css'
 
 const Topic = () => {
+    const { topicState: { topics }, getAllTopic, findTopic } = React.useContext(TopicContext)
+    React.useEffect(() => getAllTopic(), [])
+
+    const handelChooseTopic = id => {
+        findTopic(id)
+    }
+
     return (
         <Box className='topic' sx={{ borderRadius: '3px' }}>
             <Grid
@@ -23,41 +31,22 @@ const Topic = () => {
                 }}
             />
             <Grid container>
-                <Grid xs={12}>
-                    <Button as={Link} to='/postIdea'>
-                        <span>1</span>
-                        <KeyboardArrowUpIcon />
-                        <span>alo anh hoang</span>
-                    </Button>
-                </Grid>
-                <Grid xs={12}>
-                    <Button>
-                        <span>2</span>
-                        <KeyboardArrowUpIcon />
-                        <span>alo anh hoang</span>
-                    </Button>
-                </Grid>
-                <Grid xs={12}>
-                    <Button>
-                        <span>3</span>
-                        <KeyboardArrowUpIcon />
-                        <span>alo anh hoang</span>
-                    </Button>
-                </Grid>
-                <Grid xs={12}>
-                    <Button>
-                        <span>4</span>
-                        <KeyboardArrowUpIcon />
-                        <span>alo anh hoang</span>
-                    </Button>
-                </Grid>
-                <Grid xs={12}>
-                    <Button>
-                        <span>5</span>
-                        <KeyboardArrowUpIcon />
-                        <span>alo anh hoang</span>
-                    </Button>
-                </Grid>
+                {topics.map((topic, index) => {
+                    return (
+                        <Grid xs={12} key={topic.ideaCategoryId}>
+                            <Button
+                                as={Link}
+                                to='/postIdea'
+                                sx={{ textDecoration: 'none', display: 'flex', justifyContent: 'flex-start' }}
+                                onClick={handelChooseTopic.bind(this, topic.ideaCategoryId)}
+                            >
+                                <span>{index + 1}</span>
+                                <KeyboardArrowUpIcon />
+                                <span>{topic.title}</span>
+                            </Button>
+                        </Grid>
+                    )
+                })}
                 <Button sx={{ margin: ' 10px auto' }} variant="contained">View All</Button>
             </Grid>
         </Box>

@@ -1,12 +1,23 @@
-import * as React from 'react';
+import { useState, useContext, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { TopicContext } from '../../../../contexts/TopicContext';
+import ModalUpdateTopic from '../ModalUpdateTopic'
 
 const ListTopic = () => {
-    const { getAllTopic, topicState: { topics } } = React.useContext(TopicContext)
-    React.useEffect(() => { getAllTopic() }, [])
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const props = { open, handleClose }
+
+    const { getAllTopic, topicState: { topics }, findTopic, deleteTopic } = useContext(TopicContext)
+    useEffect(() => { getAllTopic() }, [])
+
+    const chooseUpdateTopic = (id) => {
+        findTopic(id)
+        handleOpen()
+    }
 
     return (
         <div >
@@ -16,10 +27,10 @@ const ListTopic = () => {
                         <li key={topic.ideaCategoryId}>
                             <span>{topic.title}</span>
                             <div className="list-topic__control">
-                                <IconButton>
+                                <IconButton onClick={chooseUpdateTopic.bind(this, topic.ideaCategoryId)}>
                                     <EditOutlinedIcon />
                                 </IconButton>
-                                <IconButton>
+                                <IconButton onClick={deleteTopic.bind(this, topic.ideaCategoryId)}>
                                     <DeleteOutlinedIcon />
                                 </IconButton>
                             </div>
@@ -27,6 +38,7 @@ const ListTopic = () => {
                     )
                 })}
             </ul>
+            <ModalUpdateTopic props={props} />
         </div>
     )
 }
