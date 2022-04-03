@@ -12,19 +12,19 @@ const TopicContextProvider = ({ children }) => {
         topics: []
     })
 
-    // const getAllUsers = async () => {
-    //     try {
-    //         const response = await axios.get(`${apiUrl}/Users`)
-    //         if (response.status === 200) {
-    //             dispatch({
-    //                 type: 'GET_ALL_USER',
-    //                 payload: response.data.listUsers
-    //             })
-    //         }
-    //     } catch (e) {
-    //         console.log(e.response.data);
-    //     }
-    // }
+    const getAllTopic = async () => {
+        try {
+            const response = await axios.get(`${apiUrl}/Category`)
+            if (response.status === 200) {
+                dispatch({
+                    type: 'GET_ALL_TOPICS',
+                    payload: response.data
+                })
+            }
+        } catch (e) {
+            console.log(e.response.data);
+        }
+    }
 
     const createNewTopic = async topicForm => {
         try {
@@ -44,7 +44,8 @@ const TopicContextProvider = ({ children }) => {
 
     const topicData = {
         topicState,
-        createNewTopic
+        createNewTopic,
+        getAllTopic
     }
 
     return (

@@ -19,7 +19,6 @@ const AuthContextProvider = ({ children }) => {
             try {
                 const response = await axios.get(`${apiUrl}/Users/${id}`)
                 if (response.status === 200) {
-                    console.log("ok")
                     dispatch({
                         type: 'SET_AUTH', payload: {
                             isAuthenticated: true,
@@ -29,6 +28,7 @@ const AuthContextProvider = ({ children }) => {
                 }
             } catch (error) {
                 localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME)
+                localStorage.removeItem(USER_ID)
                 setAuthToken(null)
                 dispatch({
                     type: 'SET_AUTH', payload: {
@@ -47,6 +47,7 @@ const AuthContextProvider = ({ children }) => {
     }, [])
 
     const loginUser = async userForm => {
+        console.log('alo');
         try {
             const response = await axios.post(`${apiUrl}/account/Login`, userForm)
             if (response.status === 200) {

@@ -35,7 +35,7 @@ const AdminPage = ({ task }) => {
 
     if (!user) {
         return (
-            <div>
+            <div className="admin-progress">
                 <CircularProgress />
             </div>
         )

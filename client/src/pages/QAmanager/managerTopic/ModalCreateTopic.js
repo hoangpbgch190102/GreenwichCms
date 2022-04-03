@@ -70,6 +70,9 @@ const ModalCreateTopic = ({ props }) => {
                             create
                         </Button>
                     </form>
+                    <div style={{ textAlign: 'right' }}>
+                        <Button variant="outlined" onClick={handleClose} >Cancel</Button>
+                    </div>
                 </Box>
             </Modal>
         </div>

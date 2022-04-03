@@ -11,6 +11,22 @@ export const UserReducer = (state, action) => {
                 ...state,
                 users: [...state.users, payload]
             }
+        case 'FIND_USER':
+            return {
+                ...state,
+                user: payload
+            }
+        case 'UPDATE_USER':
+            const newUsers = state.users.map(user => user.userId === payload.userId ? payload : user)
+            return {
+                ...state,
+                users: newUsers
+            }
+        case 'DELETE_USER':
+            return {
+                ...state,
+                users: state.users.filter(user => user.userId !== payload)
+            }
         default:
             return state;
     }

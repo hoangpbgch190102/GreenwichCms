@@ -30,7 +30,6 @@ const UserContextProvider = ({ children }) => {
         try {
             const response = await axios.post(`${apiUrl}/Users`, userForm)
             if (response.status === 200) {
-                console.log(response);
                 dispatch({
                     type: 'CREATE_NEW_USER',
                     payload: response.data
@@ -42,10 +41,47 @@ const UserContextProvider = ({ children }) => {
         }
     }
 
+    const findUser = id => {
+        const findUser = userState.users.find(user => user.userId === id);
+        dispatch({ type: 'FIND_USER', payload: findUser });
+    }
+
+    const updateUser = async updateUserForm => {
+        try {
+            const response = await axios.put(`${apiUrl}/Users`, updateUserForm)
+            if (response.status === 200) {
+                dispatch({
+                    type: 'UPDATE_USER',
+                    payload: response.data
+                });
+                return response.data;
+            }
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    const deleteUser = async id => {
+        try {
+            const response = await axios.delete(`${apiUrl}/Users/${id}`);
+            if (response.status === 200) {
+                dispatch({
+                    type: 'DELETE_USER',
+                    payload: id
+                });
+            }
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
     const userData = {
         userState,
         getAllUsers,
-        createNewUser
+        createNewUser,
+        findUser,
+        updateUser,
+        deleteUser
     }
 
     return (

@@ -14,6 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import UserSetting from './UserSetting'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import '../Home.css'
 
@@ -31,6 +32,15 @@ const Header = () => {
             setShowSetting(false)
         }
     }
+
+    if (!user) {
+        return (
+            <div className="admin-progress">
+                <CircularProgress />
+            </div>
+        )
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: '#fff', color: '#333', position: 'fixed', zIndex: 1 }}>

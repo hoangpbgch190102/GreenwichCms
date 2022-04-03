@@ -8,40 +8,32 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { UserContext } from '../../contexts/UserContext';
-import SuccessAlert from '../../components/alert/SuccessAlert'
-import { Navigate } from 'react-router-dom';
+import SuccessAlert from '../../components/alert/SuccessAlert';
 
-const CreateAccount = () => {
-    const { createNewUser } = React.useContext(UserContext)
-    const [gen, setGen] = React.useState('male')
-    const [role, setRole] = React.useState('Quality Assurance Manager')
-    // const [department, setDepartment] = React.useState('Quality Assurance Manager')
+const UpdateAccount = (props) => {
+    const { userState: { user }, updateUser } = React.useContext(UserContext)
+    React.useEffect(() => { setUserFormUpdate(user) }, [user])
+    const [userFormUpdate, setUserFormUpdate] = React.useState(user);
+    const [gen, setGen] = React.useState(userFormUpdate.gender)
+    const [role, setRole] = React.useState(userFormUpdate.role)
+    // const [department, setDepartment] = React.useState(userFormUpdate.department)
     const [showAler, setShowAler] = React.useState(false)
-    const [userForm, setUserForm] = React.useState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        userName: '',
-        password: '',
-    });
-    const { firstName, lastName, dateOfBirth, userName, password } = userForm
 
-    const onchangeUserInfo = e => {
-        setUserForm({ ...userForm, gender: gen, role: role, [e.target.name]: e.target.value });
+    const { firstName, lastName, dateOfBirth, userName, password } = userFormUpdate
+
+    const onchangeUserInfoUpdate = e => {
+        setUserFormUpdate({ ...userFormUpdate, gender: gen, role, [e.target.name]: e.target.value });
     }
 
-    const handelCreate = async (e) => {
+    const handelUpdate = async (e) => {
         e.preventDefault();
-
-        await createNewUser(userForm)
+        await updateUser({ ...userFormUpdate, gender: gen, role });
         setShowAler(true)
         setTimeout(() => {
             setShowAler(false)
-        }, 3000)
-
+            props.props.setEdit(false)
+        }, 2000)
     }
-
-    <Navigate to="/admin/viewAll" />
 
     return (
         <React.Fragment>
@@ -50,9 +42,9 @@ const CreateAccount = () => {
                 : null
             }
             <Typography variant="h4" gutterBottom>
-                Create new account
+                Update account
             </Typography>
-            <form action="" onSubmit={handelCreate} >
+            <form action="" onSubmit={handelUpdate} >
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -61,7 +53,7 @@ const CreateAccount = () => {
                             name="firstName"
                             label="First name"
                             value={firstName}
-                            onChange={onchangeUserInfo}
+                            onChange={onchangeUserInfoUpdate}
                             fullWidth
                             autoComplete="given-name"
                             variant="standard"
@@ -74,7 +66,7 @@ const CreateAccount = () => {
                             name="lastName"
                             label="Last name"
                             value={lastName}
-                            onChange={onchangeUserInfo}
+                            onChange={onchangeUserInfoUpdate}
                             fullWidth
                             autoComplete="family-name"
                             variant="standard"
@@ -87,7 +79,7 @@ const CreateAccount = () => {
                             name="dateOfBirth"
                             label="Date Of Birth"
                             value={dateOfBirth}
-                            onChange={onchangeUserInfo}
+                            onChange={onchangeUserInfoUpdate}
                             fullWidth
                             autoComplete="shipping address-line1"
                             variant="standard"
@@ -100,8 +92,8 @@ const CreateAccount = () => {
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
                                 label="gender"
-                                value={gen}
                                 onChange={e => setGen(e.target.value)}
+                                value={gen}
                                 required
                             >
                                 <MenuItem value='male'>Male</MenuItem>
@@ -136,9 +128,7 @@ const CreateAccount = () => {
                                 id="demo-simple-select-standard"
                                 label="Role"
                                 required
-                                onChange={e => {
-                                    setRole(e.target.value)
-                                }}
+                                onChange={e => setRole(e.target.value)}
                                 value={role}
                             >
                                 <MenuItem value='Quality Assurance Manager'>Quality Assurance Manager</MenuItem>
@@ -155,7 +145,7 @@ const CreateAccount = () => {
                             name="userName"
                             label="User Name"
                             value={userName}
-                            onChange={onchangeUserInfo}
+                            onChange={onchangeUserInfoUpdate}
                             fullWidth
                             autoComplete="shipping address-line2"
                             variant="standard"
@@ -168,14 +158,14 @@ const CreateAccount = () => {
                             name="password"
                             label="Password"
                             value={password}
-                            onChange={onchangeUserInfo}
+                            onChange={onchangeUserInfoUpdate}
                             fullWidth
                             autoComplete="shipping address-level2"
                             variant="standard"
                         />
                     </Grid>
                     <Grid item xs={12} style={{ textAlign: 'center' }}>
-                        <Button type="submit" variant="contained">Create</Button>
+                        <Button type="submit" variant="contained">Update</Button>
                     </Grid>
                 </Grid>
             </form>
@@ -183,4 +173,4 @@ const CreateAccount = () => {
     );
 };
 
-export default CreateAccount;
+export default UpdateAccount;
